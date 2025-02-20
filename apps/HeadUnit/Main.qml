@@ -133,7 +133,7 @@ Window {
                                 opacity: 0
                                 onClicked: {
                                     console.log("D clicked");
-                                    // Your action here
+                                    someIP.send_gear_data(3);
                                 }
                             }
 
@@ -144,7 +144,7 @@ Window {
                                 opacity: 0
                                 onClicked: {
                                     console.log("N clicked");
-                                    // Your action here
+                                    someIP.send_gear_data(2);
                                 }
                             }
 
@@ -155,7 +155,7 @@ Window {
                                 opacity: 0
                                 onClicked: {
                                     console.log("R clicked");
-                                    // Your action here
+                                    someIP.send_gear_data(1);
                                 }
                             }
                             Button {
@@ -165,7 +165,7 @@ Window {
                                 opacity: 0
                                 onClicked: {
                                     console.log("P clicked");
-                                    // Your action here
+                                    someIP.send_gear_data(0);
                                 }
                             }
                         }

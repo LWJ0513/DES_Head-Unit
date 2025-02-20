@@ -5,9 +5,28 @@
 
 #include "modules/spotify/spotify.h"
 #include "shared/utils/envmanager.h"
+#include "shared/utils/someip.h"
+#include "../ServiceManager/src/server.hpp"
+
+std::shared_ptr<vsomeip::application> app;
+std::mutex mutex;
+std::condition_variable condition;
+
+void init_vSOMEIP() {
+    app = vsomeip::runtime::get()->create_application("gear");
+    app->init();
+    app->register_availability_handler(VEHICLE_SERVICE_ID, GEAR_INSTANCE_ID, on_availability);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    app->request_service(VEHICLE_SERVICE_ID, GEAR_INSTANCE_ID);
+    app->register_message_handler(VEHICLE_SERVICE_ID, GEAR_INSTANCE_ID, JOY_GEAR_RESPONSE_MID, on_message);
+    std::thread sender(run);
+    app->start();
+}
 
 int main(int argc, char *argv[])
 {
+    init_vSOMEIP();
+
     QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     QGuiApplication app(argc, argv);
 
@@ -23,6 +42,9 @@ int main(int argc, char *argv[])
 
     Spotify spotify;
     engine.rootContext()->setContextProperty("spotify", &spotify);
+
+    SomeIP someIP;
+    engine.rootContext()->setContextProperty("someIP", &someIP);
 
     QObject::connect(
         &engine,
