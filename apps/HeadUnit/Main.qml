@@ -383,7 +383,7 @@ Window {
                                     id: mouseAreaP
                                     anchors.fill: parent
                                     onClicked: {
-                                        console.log("D clicked")
+                                        console.log("P clicked")
                                         someIP.send_gear_data(0);
                                     }
                                 }
